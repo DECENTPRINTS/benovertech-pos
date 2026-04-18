@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    
+    <!-- App Manifest -->
+    <link rel="manifest" href="/manifest.json" />
+    
+    <!-- Theme Colors -->
+    <meta name="theme-color" content="#000000" />
+    <meta name="msapplication-TileColor" content="#000000" />
+    
+    <!-- App Metadata -->
+    <meta name="description" content="BENOVERTECH POS - Professional Point of Sale system for retail businesses. Complete inventory management, sales processing, and business analytics." />
+    <meta name="keywords" content="POS, point of sale, inventory, retail, sales, business" />
+    <meta name="author" content="BENOVERTECH" />
+    
+    <!-- Apple PWA Support -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="BENOVERTECH POS" />
+    
+    <!-- Android PWA Support -->
+    <meta name="mobile-web-app-capable" content="yes" />
+    
+    <!-- App Icons for Apple -->
+    <link rel="apple-touch-icon" href="/icons/icon-192.png" />
+    <link rel="apple-touch-icon" sizes="512x512" href="/icons/icon-512.png" />
+    
+    <!-- Splash Screens for Apple -->
+    <link rel="apple-touch-startup-image" href="/icons/splash-screen.png" media="(device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3)" />
+    <link rel="apple-touch-startup-image" href="/icons/splash-screen-ipad.png" media="(device-width: 768px) and (device-height: 1024px)" />
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link rel="shortcut icon" href="/icons/icon-192.png" />
+    
+    <!-- Open Graph (Social Sharing) -->
+    <meta property="og:title" content="BENOVERTECH POS" />
+    <meta property="og:description" content="Professional Point of Sale system for retail businesses" />
+    <meta property="og:image" content="/icons/icon-512.png" />
+    <meta property="og:type" content="website" />
+    
+    <!-- Security Headers -->
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    
+    <title>BENOVERTECH POS System</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    
+    <!-- Service Worker Registration -->
+    <script>
+      // Register Service Worker for PWA functionality
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker
+            .register('/service-worker.js')
+            .then((registration) => {
+              console.log('Service Worker registered successfully:', registration);
+              
+              // Check for updates periodically
+              setInterval(() => {
+                registration.update();
+              }, 60000); // Check every minute
+            })
+            .catch((error) => {
+              console.warn('Service Worker registration failed:', error);
+            });
+          
+          // Handle service worker update
+          let refreshing = false;
+          navigator.serviceWorker.addEventListener('controllerchange', () => {
+            if (refreshing) return;
+            refreshing = true;
+            window.location.reload();
+          });
+        });
+      }
+      
+      // Prompt to install PWA
+      let deferredPrompt;
+      window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        console.log('Install prompt ready');
+        // Show install button here if desired
+      });
+      
+      // Handle install button click (if you add an install button in the UI)
+      window.addEventListener('appinstalled', () => {
+        console.log('PWA installed successfully');
+        deferredPrompt = null;
+      });
+    </script>
+    
+    <!-- Main App -->
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
