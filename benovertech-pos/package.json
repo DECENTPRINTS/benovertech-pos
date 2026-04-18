@@ -10,7 +10,9 @@
     "build": "npm run build --workspace=server && npm run build --workspace=client",
     "build:server": "npm run build --workspace=server",
     "build:client": "npm run build --workspace=client",
-    "start": "npm run start --workspace=server"
+    "start": "npm run start --workspace=server",
+    "vercel-build": "npm run build",
+    "vercel-install": "npm install && npx prisma generate"
   },
   "workspaces": [
     "server",

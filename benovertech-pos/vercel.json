@@ -1,0 +1,44 @@
+{
+  "version": 2,
+  "buildCommand": "npm run build",
+  "installCommand": "npm install",
+  "env": {
+    "NODE_ENV": "production",
+    "DATABASE_URL": "@database_url",
+    "CLIENT_URL": "@client_url"
+  },
+  "builds": [
+    {
+      "src": "server/package.json",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "client/package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "dist"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "server/src/index.js"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "client/dist/$1",
+      "status": 200
+    },
+    {
+      "src": "/.*",
+      "dest": "client/dist/index.html"
+    }
+  ],
+  "functions": {
+    "server/src/index.js": {
+      "maxDuration": 30,
+      "memory": 1024
+    }
+  }
+}

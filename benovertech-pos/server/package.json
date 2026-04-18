@@ -7,7 +7,7 @@
   "main": "src/index.js",
   "scripts": {
     "dev": "nodemon --exec node src/index.js",
-    "build": "echo \"No build step required\"",
+    "build": "prisma generate",
     "start": "node src/index.js",
     "prisma:migrate": "prisma migrate dev",
     "prisma:generate": "prisma generate",
