@@ -80,44 +80,46 @@ app.use((err, req, res, next) => {
   });
 });
 
-// Start Server
-const server = app.listen(PORT, () => {
-  console.log('\n' + '='.repeat(60));
-  console.log('✅ BENOVERTECH POS Server');
-  console.log('='.repeat(60));
-  console.log(`📍 Server: http://localhost:${PORT}`);
-  console.log(`🏢 Business: ${BUSINESS_INFO.name}`);
-  console.log(`📞 Phone: ${BUSINESS_INFO.phone}`);
-  console.log(`📧 Email: ${BUSINESS_INFO.email}`);
-  console.log('='.repeat(60));
-  console.log('\nAvailable Endpoints:');
-  console.log('  GET    /api/health');
-  console.log('  GET    /api/business-info');
-  console.log('  GET    /api/products');
-  console.log('  POST   /api/products');
-  console.log('  GET    /api/products/:id');
-  console.log('  PUT    /api/products/:id');
-  console.log('  DELETE /api/products/:id');
-  console.log('  GET    /api/products/search?q=query');
-  console.log('  GET    /api/products/low-stock?threshold=10');
-  console.log('  POST   /api/sales');
-  console.log('  GET    /api/sales');
-  console.log('  GET    /api/sales/:id');
-  console.log('  GET    /api/sales/daily?date=2024-01-01');
-  console.log('  GET    /api/analytics');
-  console.log('  GET    /api/analytics/monthly?month=1&year=2024');
-  console.log('  GET    /api/analytics/inventory');
-  console.log('='.repeat(60) + '\n');
-});
-
-// Graceful shutdown
-process.on('SIGINT', async () => {
-  console.log('\n⏹️  Shutting down gracefully...');
-  server.close(async () => {
-    await prisma.$disconnect();
-    console.log('✅ Server closed. Goodbye!');
-    process.exit(0);
+// Start Server (only in development or non-serverless environments)
+if (process.env.NODE_ENV !== 'production' && !process.env.VERCEL) {
+  const server = app.listen(PORT, () => {
+    console.log('\n' + '='.repeat(60));
+    console.log('✅ BENOVERTECH POS Server');
+    console.log('='.repeat(60));
+    console.log(`📍 Server: http://localhost:${PORT}`);
+    console.log(`🏢 Business: ${BUSINESS_INFO.name}`);
+    console.log(`📞 Phone: ${BUSINESS_INFO.phone}`);
+    console.log(`📧 Email: ${BUSINESS_INFO.email}`);
+    console.log('='.repeat(60));
+    console.log('\nAvailable Endpoints:');
+    console.log('  GET    /api/health');
+    console.log('  GET    /api/business-info');
+    console.log('  GET    /api/products');
+    console.log('  POST   /api/products');
+    console.log('  GET    /api/products/:id');
+    console.log('  PUT    /api/products/:id');
+    console.log('  DELETE /api/products/:id');
+    console.log('  GET    /api/products/search?q=query');
+    console.log('  GET    /api/products/low-stock?threshold=10');
+    console.log('  POST   /api/sales');
+    console.log('  GET    /api/sales');
+    console.log('  GET    /api/sales/:id');
+    console.log('  GET    /api/sales/daily?date=2024-01-01');
+    console.log('  GET    /api/analytics');
+    console.log('  GET    /api/analytics/monthly?month=1&year=2024');
+    console.log('  GET    /api/analytics/inventory');
+    console.log('='.repeat(60) + '\n');
   });
-});
+
+  // Graceful shutdown
+  process.on('SIGINT', async () => {
+    console.log('\n⏹️  Shutting down gracefully...');
+    server.close(async () => {
+      await prisma.$disconnect();
+      console.log('✅ Server closed. Goodbye!');
+      process.exit(0);
+    });
+  });
+}
 
 export default app;

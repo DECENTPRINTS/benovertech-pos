@@ -1,11 +1,9 @@
 {
   "version": 2,
   "buildCommand": "npm run build",
-  "installCommand": "npm install",
+  "installCommand": "npm install && npx prisma generate",
   "env": {
-    "NODE_ENV": "production",
-    "DATABASE_URL": "@database_url",
-    "CLIENT_URL": "@client_url"
+    "NODE_ENV": "production"
   },
   "builds": [
     {
@@ -26,12 +24,19 @@
       "dest": "server/src/index.js"
     },
     {
-      "src": "/(.*)",
-      "dest": "client/dist/$1",
-      "status": 200
+      "src": "/manifest.json",
+      "dest": "client/dist/manifest.json"
     },
     {
-      "src": "/.*",
+      "src": "/service-worker.js",
+      "dest": "client/dist/service-worker.js"
+    },
+    {
+      "src": "/assets/(.*)",
+      "dest": "client/dist/assets/$1"
+    },
+    {
+      "src": "/(.*)",
       "dest": "client/dist/index.html"
     }
   ],
