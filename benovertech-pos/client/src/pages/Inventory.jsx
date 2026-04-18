@@ -234,20 +234,6 @@ export default function Inventory() {
   );
 }
 
-export default function Inventory() {
-  const [search, setSearch] = useState('');
-  const [showAddModal, setShowAddModal] = useState(false);
-
-  // Sample products (will connect to API later)
-  const allProducts = [
-    { id: 1, name: 'iPhone 15 Pro', category: 'Smartphones', sku: 'IP15P', stock: 5, costPrice: 280000, sellingPrice: 350000, barcode: '8806000000000' },
-    { id: 2, name: 'Samsung S24 Ultra', category: 'Smartphones', sku: 'SMS24U', stock: 3, costPrice: 240000, sellingPrice: 290000, barcode: '8806000000001' },
-    { id: 3, name: 'iPad Pro', category: 'Tablets', sku: 'IPADPRO', stock: 2, costPrice: 450000, sellingPrice: 550000, barcode: '8806000000002' },
-    { id: 4, name: 'MacBook Air M3', category: 'Laptops', sku: 'MBM3', stock: 1, costPrice: 650000, sellingPrice: 850000, barcode: '8806000000003' },
-    { id: 5, name: 'Galaxy Tab S9 Ultra', category: 'Tablets', sku: 'GTABS9U', stock: 0, costPrice: 450000, sellingPrice: 520000, barcode: '8806000000004' },
-    { id: 6, name: 'AirPods Pro', category: 'Accessories', sku: 'APP', stock: 10, costPrice: 45000, sellingPrice: 65000, barcode: '8806000000005' },
-  ];
-
   const filteredProducts = allProducts.filter(p =>
     p.name.toLowerCase().includes(search.toLowerCase()) ||
     p.sku.toLowerCase().includes(search.toLowerCase()) ||

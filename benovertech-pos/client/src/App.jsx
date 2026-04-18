@@ -10,7 +10,7 @@ import Dashboard from './pages/Dashboard';
 import Sales from './pages/Sales';
 import Inventory from './pages/Inventory';
 import Analytics from './pages/Analytics';
-import './App.css';
+import './index.css';
 
 function App() {
   const [activeTab, setActiveTab] = useState('dashboard');

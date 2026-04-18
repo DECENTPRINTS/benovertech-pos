@@ -1,0 +1,82 @@
+// BENOVERTECH GADGETS - POS System Database Schema
+// Learn more: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Product Inventory Model
+model Product {
+  id            String      @id @default(cuid())
+  name          String      @unique
+  category      String
+  costPrice     Float       // Cost to the business
+  sellingPrice  Float       // Retail price
+  stock         Int         @default(0)
+  barcode       String      @unique
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  // Relations
+  saleItems     SaleItem[]
+}
+
+// Sales Transaction Model
+model Sale {
+  id              String      @id @default(cuid())
+  totalAmount     Float       // Total sale amount
+  totalProfit     Float       // Total profit from sale
+  customerName    String?
+  customerPhone   String?
+  paymentMethod   String      @default("cash")  // cash, card, transfer
+  createdAt       DateTime    @default(now())
+
+  // Relations
+  items           SaleItem[]
+}
+
+// Sale Line Items Model
+model SaleItem {
+  id              String      @id @default(cuid())
+  saleId          String
+  productId       String
+  quantity        Int
+  price           Float       // Selling price at time of sale
+  profit          Float       // Profit per item (price - costPrice)
+
+  // Relations
+  sale            Sale        @relation(fields: [saleId], references: [id], onDelete: Cascade)
+  product         Product     @relation(fields: [productId], references: [id])
+
+  @@index([saleId])
+  @@index([productId])
+}
+
+// Daily Analytics Cache
+model DailyAnalytics {
+  id              String      @id @default(cuid())
+  date            DateTime    @unique @db.Date
+  totalSales      Float
+  totalProfit     Float
+  totalCost       Float
+  itemsSold       Int
+  transactionCount Int
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+}
+
+// Business Expenses
+model Expense {
+  id              String      @id @default(cuid())
+  category        String
+  amount          Float
+  description     String?
+  date            DateTime    @default(now())
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+}
