@@ -5,24 +5,13 @@
   "env": {
     "NODE_ENV": "production"
   },
-  "builds": [
-    {
-      "src": "server/package.json",
-      "use": "@vercel/node"
-    },
-    {
-      "src": "client/package.json",
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "dist"
-      }
+  "functions": {
+    "api/index.js": {
+      "maxDuration": 30,
+      "memory": 1024
     }
-  ],
+  },
   "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "server/src/index.js"
-    },
     {
       "src": "/manifest.json",
       "dest": "client/dist/manifest.json"
@@ -36,14 +25,12 @@
       "dest": "client/dist/assets/$1"
     },
     {
+      "src": "/api/(.*)",
+      "dest": "api/index.js"
+    },
+    {
       "src": "/(.*)",
       "dest": "client/dist/index.html"
     }
-  ],
-  "functions": {
-    "server/src/index.js": {
-      "maxDuration": 30,
-      "memory": 1024
-    }
-  }
+  ]
 }

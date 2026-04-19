@@ -4,7 +4,17 @@
  */
 import axios from 'axios';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+// Determine API base URL
+const getAPIBaseURL = () => {
+  // In production (Vercel), use relative URL (same origin)
+  if (import.meta.env.MODE === 'production') {
+    return '/api';
+  }
+  // In development, use localhost
+  return 'http://localhost:5000/api';
+};
+
+const API_BASE_URL = getAPIBaseURL();
 
 const apiClient = axios.create({
   baseURL: API_BASE_URL,

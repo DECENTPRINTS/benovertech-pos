@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import { PrismaClient } from '@prisma/client';
+import prisma from './lib/prisma.js';
 import productRoutes from './routes/products.js';
 import saleRoutes from './routes/sales.js';
 import analyticsRoutes from './routes/analytics.js';
@@ -9,7 +9,6 @@ import analyticsRoutes from './routes/analytics.js';
 dotenv.config();
 
 const app = express();
-const prisma = new PrismaClient();
 const PORT = process.env.PORT || 5000;
 
 // BUSINESS INFO (Static)
